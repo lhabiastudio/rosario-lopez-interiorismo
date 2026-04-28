@@ -1,0 +1,2560 @@
+<!-- DEMO — Diseño conceptual por LhabiaStudio. No autorizado para uso comercial -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rosario López · Interiorismo de autor en Madrid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
+       RESET & BASE
+       ========================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* =========================================================
+       DESIGN TOKENS
+       ========================================================= */
+    :root {
+      /* Brand palette */
+      --rl-terracota:        #C4846A;
+      --rl-terracota-light:  #D9A48E;
+      --rl-terracota-dark:   #A3624C;
+      --rl-arena:            #C9A97A;
+      --rl-arena-light:      #DEC49A;
+      --rl-arena-dark:       #A8854E;
+
+      /* Backgrounds */
+      --rl-bg-cream:         #FAF8F4;
+      --rl-bg-warm:          #F5F0E8;
+      --rl-bg-white:         #FFFFFF;
+      --rl-bg-dark:          #1C1814;
+      --rl-bg-dark-mid:      #2A231D;
+
+      /* Text */
+      --rl-text-dark:        #1C1814;
+      --rl-text-body:        #3D3228;
+      --rl-text-muted:       #7A6E60;
+      --rl-text-light:       #FAF8F4;
+      --rl-text-light-muted: rgba(250, 248, 244, 0.6);
+
+      /* Borders */
+      --rl-border-warm:      rgba(196, 132, 106, 0.2);
+      --rl-border-light:     rgba(196, 132, 106, 0.12);
+      --rl-border-card:      rgba(196, 132, 106, 0.18);
+
+      /* Typography */
+      --rl-ff-serif:         'Playfair Display', Georgia, serif;
+      --rl-ff-body:          'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Layout */
+      --rl-max-w:            1120px;
+      --rl-container-px:     1.5rem;
+
+      /* Motion */
+      --rl-transition:       0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --rl-transition-fast:  0.22s ease;
+
+      /* Z-index scale */
+      --rl-z-nav:            100;
+      --rl-z-overlay:        10;
+      --rl-z-content:        2;
+      --rl-z-base:           1;
+    }
+
+    /* =========================================================
+       GLOBAL STYLES
+       ========================================================= */
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--rl-ff-body);
+      color: var(--rl-text-body);
+      background: var(--rl-bg-cream);
+      overflow-x: hidden;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* =========================================================
+       SCROLL REVEAL
+       ========================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.72s ease, transform 0.72s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.10s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.34s; }
+    .reveal-delay-4 { transition-delay: 0.46s; }
+    .reveal-delay-5 { transition-delay: 0.58s; }
+
+    /* =========================================================
+       LAYOUT PRIMITIVES
+       ========================================================= */
+    .container {
+      width: 100%;
+      max-width: var(--rl-max-w);
+      margin-inline: auto;
+      padding-inline: var(--rl-container-px);
+    }
+
+    /* =========================================================
+       TYPOGRAPHY HELPERS
+       ========================================================= */
+    .serif { font-family: var(--rl-ff-serif); }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--rl-ff-body);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--rl-terracota);
+    }
+
+    .section-label.light {
+      color: var(--rl-terracota-light);
+    }
+
+    .accent-line {
+      display: block;
+      width: 40px;
+      height: 1.5px;
+      background: var(--rl-terracota);
+      margin: 1.25rem auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.75rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--rl-ff-serif);
+      font-size: clamp(1.85rem, 4vw, 2.9rem);
+      font-weight: 400;
+      color: var(--rl-text-dark);
+      line-height: 1.22;
+      letter-spacing: 0.01em;
+    }
+
+    .section-header h2 em {
+      font-style: italic;
+      color: var(--rl-terracota-dark);
+    }
+
+    .section-header p {
+      font-size: 1rem;
+      color: var(--rl-text-muted);
+      max-width: 520px;
+      margin-inline: auto;
+      margin-top: 1rem;
+      line-height: 1.72;
+    }
+
+    /* Dark variant headings */
+    .section-header.on-dark h2 {
+      color: var(--rl-text-light);
+    }
+    .section-header.on-dark h2 em {
+      color: var(--rl-arena-light);
+    }
+    .section-header.on-dark p {
+      color: var(--rl-text-light-muted);
+    }
+    .section-header.on-dark .accent-line {
+      background: var(--rl-arena);
+    }
+
+    /* =========================================================
+       ICON UTILITY
+       ========================================================= */
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      vertical-align: middle;
+      color: var(--rl-terracota);
+    }
+
+    /* =========================================================
+       BUTTONS
+       ========================================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 48px;
+      padding: 13px 32px;
+      border-radius: 2px;
+      font-family: var(--rl-ff-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: background-color var(--rl-transition-fast),
+                  color var(--rl-transition-fast),
+                  transform var(--rl-transition-fast),
+                  box-shadow var(--rl-transition-fast);
+    }
+
+    .btn-primary {
+      background: var(--rl-terracota);
+      color: var(--rl-text-light);
+    }
+    .btn-primary:hover {
+      background: var(--rl-terracota-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(196, 132, 106, 0.32);
+    }
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--rl-terracota);
+      outline-offset: 3px;
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--rl-terracota);
+      border: 1.5px solid var(--rl-terracota);
+    }
+    .btn-outline:hover {
+      background: var(--rl-terracota);
+      color: var(--rl-text-light);
+      transform: translateY(-2px);
+    }
+    .btn-outline:focus-visible {
+      outline: 2px solid var(--rl-terracota);
+      outline-offset: 3px;
+    }
+    .btn-outline:active {
+      transform: translateY(0);
+    }
+
+    .btn-outline-light {
+      background: transparent;
+      color: var(--rl-text-light);
+      border: 1.5px solid rgba(250, 248, 244, 0.45);
+    }
+    .btn-outline-light:hover {
+      background: rgba(250, 248, 244, 0.1);
+      border-color: rgba(250, 248, 244, 0.75);
+      transform: translateY(-2px);
+    }
+    .btn-outline-light:focus-visible {
+      outline: 2px solid var(--rl-text-light);
+      outline-offset: 3px;
+    }
+    .btn-outline-light:active {
+      transform: translateY(0);
+    }
+
+    /* =========================================================
+       NAV
+       ========================================================= */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: var(--rl-z-nav);
+      padding: 1.25rem var(--rl-container-px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(250, 248, 244, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--rl-border-light);
+      padding-top: 0.85rem;
+      padding-bottom: 0.85rem;
+    }
+
+    .nav-brand {
+      font-family: var(--rl-ff-serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--rl-text-light);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color var(--rl-transition-fast);
+    }
+
+    .nav.scrolled .nav-brand {
+      color: var(--rl-text-dark);
+    }
+
+    .nav-links {
+      display: none;
+      list-style: none;
+      align-items: center;
+      gap: 2.25rem;
+    }
+
+    .nav-links a {
+      font-family: var(--rl-ff-body);
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(250, 248, 244, 0.75);
+      transition: color var(--rl-transition-fast);
+    }
+
+    .nav.scrolled .nav-links a {
+      color: var(--rl-text-muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--rl-text-light);
+    }
+
+    .nav.scrolled .nav-links a:hover {
+      color: var(--rl-terracota);
+    }
+
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--rl-terracota);
+      outline-offset: 2px;
+      border-radius: 1px;
+    }
+
+    .nav-cta {
+      font-family: var(--rl-ff-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--rl-terracota-light);
+      border: 1px solid rgba(196, 132, 106, 0.5);
+      padding: 0.55rem 1.25rem;
+      border-radius: 2px;
+      transition: all var(--rl-transition-fast);
+      white-space: nowrap;
+    }
+
+    .nav.scrolled .nav-cta {
+      color: var(--rl-terracota);
+      border-color: var(--rl-terracota);
+    }
+
+    .nav-cta:hover {
+      background: var(--rl-terracota);
+      color: var(--rl-text-light);
+      border-color: var(--rl-terracota);
+    }
+
+    .nav-cta:focus-visible {
+      outline: 2px solid var(--rl-terracota);
+      outline-offset: 3px;
+    }
+
+    /* =========================================================
+       1. HERO
+       ========================================================= */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          155deg,
+          rgba(28, 24, 20, 0.94) 0%,
+          rgba(42, 30, 20, 0.90) 40%,
+          rgba(28, 24, 20, 0.96) 100%
+        ),
+        radial-gradient(
+          ellipse 140% 80% at 68% 45%,
+          #5C3A24 0%,
+          #3A2010 38%,
+          #1C1008 72%,
+          #0E0804 100%
+        );
+    }
+
+    /* Warm ambient glow — simulates late afternoon light through a window */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 65% at 72% 38%, rgba(196, 132, 106, 0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 35% 45% at 28% 70%, rgba(201, 169, 122, 0.08) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: var(--rl-z-base);
+    }
+
+    /* Vertical light streak — column of sunlight */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 22%;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(201, 169, 122, 0.2) 22%,
+        rgba(201, 169, 122, 0.35) 48%,
+        rgba(201, 169, 122, 0.14) 78%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: var(--rl-z-base);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: var(--rl-z-content);
+      padding: 7rem var(--rl-container-px) 5rem;
+      max-width: 860px;
+      width: 100%;
+      margin-inline: auto;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--rl-ff-body);
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--rl-arena-light);
+      opacity: 0.82;
+      margin-bottom: 2rem;
+    }
+
+    .hero-headline {
+      font-family: var(--rl-ff-serif);
+      font-size: clamp(2.6rem, 7.5vw, 5.5rem);
+      font-weight: 400;
+      color: var(--rl-text-light);
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--rl-arena-light);
+      display: block;
+    }
+
+    .hero-sub {
+      font-family: var(--rl-ff-serif);
+      font-style: italic;
+      font-size: clamp(1rem, 2.6vw, 1.3rem);
+      color: rgba(250, 248, 244, 0.72);
+      line-height: 1.6;
+      max-width: 580px;
+      margin-bottom: 3rem;
+    }
+
+    .hero-sub strong {
+      font-style: normal;
+      color: var(--rl-arena-light);
+      font-weight: 500;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    /* Experience badge */
+    .hero-badge {
+      position: absolute;
+      bottom: 3.5rem;
+      right: var(--rl-container-px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      text-align: center;
+      z-index: var(--rl-z-content);
+    }
+
+    .hero-badge-number {
+      font-family: var(--rl-ff-serif);
+      font-size: 3rem;
+      font-weight: 400;
+      color: var(--rl-arena);
+      line-height: 1;
+    }
+
+    .hero-badge-label {
+      font-family: var(--rl-ff-body);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(250, 248, 244, 0.45);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: var(--rl-z-content);
+    }
+
+    .hero-scroll-hint span {
+      font-family: var(--rl-ff-body);
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(250, 248, 244, 0.3);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, rgba(196, 132, 106, 0.7), transparent);
+      animation: lineDown 2.4s ease-in-out infinite;
+    }
+
+    @keyframes lineDown {
+      0%, 100% { opacity: 0.35; transform: scaleY(1); }
+      50%       { opacity: 1;    transform: scaleY(1.2); }
+    }
+
+    /* =========================================================
+       2. ESPECIALIDADES
+       ========================================================= */
+    #especialidades {
+      padding: 96px 0 88px;
+      background: var(--rl-bg-cream);
+    }
+
+    .especialidades-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .especialidad-card {
+      background: var(--rl-bg-white);
+      border: 1px solid var(--rl-border-card);
+      border-radius: 3px;
+      padding: 2.75rem 2.25rem 2.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--rl-transition), box-shadow var(--rl-transition), border-color var(--rl-transition);
+    }
+
+    .especialidad-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rl-terracota) 0%, var(--rl-arena) 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s var(--rl-transition);
+    }
+
+    .especialidad-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 48px rgba(28, 24, 20, 0.1);
+      border-color: transparent;
+    }
+
+    .especialidad-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .especialidad-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(196, 132, 106, 0.1);
+      margin-bottom: 1.5rem;
+      color: var(--rl-terracota);
+      transition: background-color var(--rl-transition-fast);
+    }
+
+    .especialidad-card:hover .especialidad-icon {
+      background: rgba(196, 132, 106, 0.18);
+    }
+
+    .especialidad-card h3 {
+      font-family: var(--rl-ff-serif);
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--rl-text-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .especialidad-card p {
+      font-size: 0.95rem;
+      color: var(--rl-text-muted);
+      line-height: 1.72;
+    }
+
+    .especialidad-detail {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--rl-border-warm);
+    }
+
+    .especialidad-detail ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .especialidad-detail li {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.88rem;
+      color: var(--rl-text-body);
+    }
+
+    .especialidad-detail .icon {
+      color: var(--rl-terracota);
+      flex-shrink: 0;
+    }
+
+    /* =========================================================
+       3. PORTFOLIO
+       ========================================================= */
+    #portfolio {
+      padding: 96px 0 88px;
+      background: var(--rl-bg-warm);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .portfolio-card {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .portfolio-card:focus-visible {
+      box-shadow: 0 0 0 3px var(--rl-bg-warm), 0 0 0 5px var(--rl-terracota);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .portfolio-card:hover .card-bg {
+      transform: scale(1.045);
+    }
+
+    /* Warm interior gradients — each card a distinct room mood */
+    .pcard-1 .card-bg {
+      background:
+        radial-gradient(ellipse 90% 70% at 60% 35%, #8C6242 0%, #5A3820 45%, #2E1C0E 85%, #1A0E06 100%),
+        linear-gradient(200deg, rgba(196, 132, 106, 0.25) 0%, transparent 55%);
+    }
+
+    .pcard-2 .card-bg {
+      background:
+        radial-gradient(ellipse 75% 80% at 38% 55%, #C9A97A 0%, #8C7042 42%, #4A3818 75%, #241C0A 100%),
+        linear-gradient(135deg, rgba(250, 242, 220, 0.3) 0%, transparent 50%);
+    }
+
+    .pcard-3 .card-bg {
+      background:
+        radial-gradient(ellipse 100% 60% at 50% 28%, #D4BEA0 0%, #A88860 38%, #6C5434 68%, #2C2014 100%),
+        linear-gradient(180deg, rgba(255, 248, 235, 0.2) 0%, transparent 65%);
+    }
+
+    .pcard-4 .card-bg {
+      background:
+        radial-gradient(ellipse 70% 85% at 65% 60%, #7A5C42 0%, #4E3420 48%, #241808 80%, #100C04 100%),
+        linear-gradient(315deg, rgba(196, 132, 106, 0.18) 0%, transparent 50%);
+    }
+
+    .pcard-5 .card-bg {
+      background:
+        radial-gradient(ellipse 85% 65% at 30% 42%, #E8DCC8 0%, #C4A880 35%, #8A6840 65%, #3C2C14 100%),
+        linear-gradient(45deg, rgba(255, 250, 240, 0.25) 0%, transparent 48%);
+    }
+
+    .pcard-6 .card-bg {
+      background:
+        radial-gradient(ellipse 65% 90% at 55% 50%, #B89878 0%, #7C5C38 40%, #4A3018 72%, #1E140A 100%),
+        linear-gradient(270deg, rgba(201, 169, 122, 0.22) 0%, transparent 52%);
+    }
+
+    /* Noise grain texture — adds photo realism */
+    .card-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: var(--rl-z-base);
+    }
+
+    /* Persistent dark gradient at bottom for readability */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(28, 24, 20, 0.82) 0%,
+        rgba(28, 24, 20, 0.28) 40%,
+        transparent 65%
+      );
+      opacity: 0.72;
+      transition: opacity var(--rl-transition);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+      z-index: var(--rl-z-overlay);
+    }
+
+    .portfolio-card:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .card-info {
+      transform: translateY(4px);
+      transition: transform var(--rl-transition);
+    }
+
+    .portfolio-card:hover .card-info {
+      transform: translateY(0);
+    }
+
+    .card-type {
+      display: block;
+      font-family: var(--rl-ff-body);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--rl-arena-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .card-name {
+      font-family: var(--rl-ff-serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--rl-text-light);
+      line-height: 1.3;
+    }
+
+    /* =========================================================
+       4. PROCESO
+       ========================================================= */
+    #proceso {
+      padding: 96px 0 88px;
+      background: var(--rl-bg-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #proceso::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 15% 80%, rgba(196, 132, 106, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 55% at 85% 20%, rgba(201, 169, 122, 0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .proceso-timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Vertical connector line — mobile */
+    .proceso-timeline::before {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(196, 132, 106, 0.35) 8%,
+        rgba(196, 132, 106, 0.35) 92%,
+        transparent 100%
+      );
+    }
+
+    .proceso-step {
+      display: flex;
+      gap: 1.75rem;
+      padding: 0 0 2.5rem 0;
+      position: relative;
+    }
+
+    .proceso-step:last-child {
+      padding-bottom: 0;
+    }
+
+    .step-node {
+      display: flex;
+      align-items: flex-start;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .step-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(196, 132, 106, 0.4);
+      background: rgba(196, 132, 106, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--rl-ff-serif);
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--rl-arena-light);
+      position: relative;
+      z-index: var(--rl-z-content);
+      flex-shrink: 0;
+      transition: background-color 0.4s ease, border-color 0.4s ease;
+    }
+
+    .proceso-step:hover .step-circle {
+      background: rgba(196, 132, 106, 0.18);
+      border-color: var(--rl-terracota);
+    }
+
+    .step-content {
+      padding-top: 0.75rem;
+    }
+
+    .step-label {
+      display: block;
+      font-family: var(--rl-ff-body);
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--rl-terracota-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .step-title {
+      font-family: var(--rl-ff-serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--rl-text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.92rem;
+      color: rgba(250, 248, 244, 0.58);
+      line-height: 1.7;
+    }
+
+    /* =========================================================
+       5. SOBRE ROSARIO
+       ========================================================= */
+    #sobre {
+      padding: 96px 0 88px;
+      background: var(--rl-bg-cream);
+    }
+
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .sobre-visual {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: 2px;
+      overflow: hidden;
+      max-height: 560px;
+    }
+
+    .sobre-portrait-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 90% at 45% 40%, #9A7A5A 0%, #6A4C2E 42%, #3C2A16 74%, #1C140A 100%),
+        linear-gradient(135deg, rgba(250, 242, 226, 0.12) 0%, transparent 60%);
+    }
+
+    .sobre-portrait-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g2)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+
+    /* Decorative frame offset border */
+    .sobre-visual::after {
+      content: '';
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      right: -1.25rem;
+      bottom: -1.25rem;
+      border: 1.5px solid var(--rl-border-warm);
+      border-radius: 2px;
+      z-index: -1;
+    }
+
+    .sobre-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .sobre-bio {
+      font-size: 1rem;
+      color: var(--rl-text-body);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .sobre-bio p + p {
+      margin-top: 1rem;
+    }
+
+    .sobre-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.25rem;
+      padding: 1.75rem 0;
+      border-top: 1px solid var(--rl-border-warm);
+      border-bottom: 1px solid var(--rl-border-warm);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--rl-ff-serif);
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: var(--rl-terracota);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--rl-text-muted);
+      text-transform: uppercase;
+    }
+
+    .sobre-valores {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .valor-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+    }
+
+    .valor-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(196, 132, 106, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rl-terracota);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .valor-text strong {
+      display: block;
+      font-family: var(--rl-ff-serif);
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: var(--rl-text-dark);
+      margin-bottom: 0.2rem;
+    }
+
+    .valor-text p {
+      font-size: 0.88rem;
+      color: var(--rl-text-muted);
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       6. TESTIMONIOS
+       ========================================================= */
+    #testimonios {
+      padding: 96px 0 88px;
+      background: var(--rl-bg-warm);
+    }
+
+    .testimonios-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .testimonio-card {
+      background: var(--rl-bg-white);
+      border: 1px solid var(--rl-border-card);
+      border-radius: 3px;
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: box-shadow var(--rl-transition), transform var(--rl-transition);
+    }
+
+    .testimonio-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(28, 24, 20, 0.09);
+    }
+
+    .testimonio-mark {
+      font-family: var(--rl-ff-serif);
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--rl-terracota);
+      opacity: 0.2;
+      position: absolute;
+      top: 1.25rem;
+      left: 1.75rem;
+      pointer-events: none;
+    }
+
+    .testimonio-text {
+      font-family: var(--rl-ff-serif);
+      font-style: italic;
+      font-size: clamp(0.95rem, 2.2vw, 1.08rem);
+      color: var(--rl-text-body);
+      line-height: 1.78;
+      margin-top: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .testimonio-author {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--rl-border-warm);
+    }
+
+    .author-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1.5px solid var(--rl-border-card);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--rl-ff-serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--rl-arena-light);
+    }
+
+    .avatar-a { background: radial-gradient(circle, #5C3A24 0%, #2E1C10 100%); }
+    .avatar-b { background: radial-gradient(circle, #3A3020 0%, #1C1810 100%); }
+    .avatar-c { background: radial-gradient(circle, #4A3828 0%, #241C12 100%); }
+
+    .author-info strong {
+      display: block;
+      font-family: var(--rl-ff-serif);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--rl-text-dark);
+      margin-bottom: 0.18rem;
+    }
+
+    .author-info small {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rl-terracota);
+    }
+
+    .testimonio-placeholder {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(28, 24, 20, 0.25);
+      border: 1px solid rgba(28, 24, 20, 0.12);
+      padding: 0.22rem 0.65rem;
+      border-radius: 20px;
+    }
+
+    /* =========================================================
+       7. CONTACTO
+       ========================================================= */
+    #contacto {
+      padding: 96px 0 88px;
+      background: var(--rl-bg-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #contacto::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 50%, rgba(196, 132, 106, 0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .contacto-inner {
+      position: relative;
+      z-index: var(--rl-z-content);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    .contacto-info h2 {
+      font-family: var(--rl-ff-serif);
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 400;
+      color: var(--rl-text-light);
+      line-height: 1.22;
+      margin-bottom: 1rem;
+    }
+
+    .contacto-info h2 em {
+      font-style: italic;
+      color: var(--rl-arena-light);
+    }
+
+    .contacto-info p {
+      font-size: 0.97rem;
+      color: rgba(250, 248, 244, 0.58);
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+
+    .contacto-detail-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contacto-detail-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      font-size: 0.9rem;
+      color: rgba(250, 248, 244, 0.65);
+    }
+
+    .contacto-detail-list .icon {
+      color: var(--rl-terracota-light);
+    }
+
+    .contacto-detail-list a {
+      color: var(--rl-arena-light);
+      text-decoration: none;
+      transition: color var(--rl-transition-fast);
+    }
+
+    .contacto-detail-list a:hover {
+      color: var(--rl-text-light);
+    }
+
+    .contacto-detail-list a:focus-visible {
+      outline: 2px solid var(--rl-arena-light);
+      outline-offset: 2px;
+    }
+
+    /* FORM */
+    .contacto-form {
+      background: rgba(250, 248, 244, 0.04);
+      border: 1px solid rgba(196, 132, 106, 0.18);
+      border-radius: 3px;
+      padding: 2.5rem 2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .form-group.col-2 {
+      grid-column: span 1;
+    }
+
+    label {
+      font-family: var(--rl-ff-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(250, 248, 244, 0.5);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      background: rgba(250, 248, 244, 0.06);
+      border: 1px solid rgba(196, 132, 106, 0.22);
+      border-radius: 2px;
+      padding: 0.75rem 0.875rem;
+      font-family: var(--rl-ff-body);
+      font-size: 0.9rem;
+      color: var(--rl-text-light);
+      outline: none;
+      transition: border-color var(--rl-transition-fast), background-color var(--rl-transition-fast);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="tel"]::placeholder,
+    input[type="number"]::placeholder,
+    textarea::placeholder {
+      color: rgba(250, 248, 244, 0.25);
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(196, 132, 106, 0.65);
+      background: rgba(250, 248, 244, 0.09);
+    }
+
+    input[type="text"]:hover,
+    input[type="email"]:hover,
+    input[type="tel"]:hover,
+    input[type="number"]:hover,
+    input[type="date"]:hover,
+    select:hover,
+    textarea:hover {
+      border-color: rgba(196, 132, 106, 0.38);
+    }
+
+    select option {
+      background: var(--rl-bg-dark-mid);
+      color: var(--rl-text-light);
+    }
+
+    /* Custom select arrow */
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid rgba(196, 132, 106, 0.6);
+      pointer-events: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-submit {
+      margin-top: 0.5rem;
+    }
+
+    .form-submit .btn {
+      width: 100%;
+    }
+
+    /* Form success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .form-success.visible {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .form-success-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(196, 132, 106, 0.12);
+      border: 1.5px solid rgba(196, 132, 106, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rl-terracota-light);
+      animation: successPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes successPop {
+      from { transform: scale(0.7); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .form-success h3 {
+      font-family: var(--rl-ff-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--rl-text-light);
+    }
+
+    .form-success p {
+      font-size: 0.9rem;
+      color: rgba(250, 248, 244, 0.55);
+      line-height: 1.7;
+      max-width: 320px;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    footer {
+      background: var(--rl-bg-dark);
+      border-top: 1px solid rgba(196, 132, 106, 0.1);
+      padding: 2.25rem var(--rl-container-px);
+      text-align: center;
+    }
+
+    .footer-brand {
+      font-family: var(--rl-ff-serif);
+      font-size: 1rem;
+      color: rgba(250, 248, 244, 0.22);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-meta {
+      font-size: 0.7rem;
+      color: rgba(250, 248, 244, 0.22);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-meta a {
+      color: var(--rl-arena);
+      opacity: 0.6;
+      text-decoration: none;
+      transition: opacity var(--rl-transition-fast);
+    }
+
+    .footer-meta a:hover { opacity: 1; }
+    .footer-meta a:focus-visible {
+      outline: 2px solid var(--rl-arena);
+      outline-offset: 2px;
+    }
+
+    .footer-disclaimer {
+      font-size: 0.65rem;
+      color: rgba(250, 248, 244, 0.18);
+      margin-top: 0.4rem;
+      font-style: italic;
+    }
+
+    /* =========================================================
+       RESPONSIVE — tablet (>=768px)
+       ========================================================= */
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+
+      .hero-cta-group {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .hero-badge {
+        right: 2.5rem;
+      }
+
+      .especialidades-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.125rem;
+      }
+
+      .proceso-timeline {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 0;
+      }
+
+      /* Horizontal connector — replaces vertical */
+      .proceso-timeline::before {
+        top: 24px;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent 0%,
+          rgba(196, 132, 106, 0.35) 8%,
+          rgba(196, 132, 106, 0.35) 92%,
+          transparent 100%
+        );
+      }
+
+      .proceso-step {
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0 1rem 0;
+        gap: 0.875rem;
+      }
+
+      .step-node {
+        align-items: center;
+        padding-top: 0;
+      }
+
+      .step-content {
+        padding-top: 0;
+      }
+
+      .sobre-grid {
+        grid-template-columns: 5fr 7fr;
+        gap: 4rem;
+      }
+
+      .testimonios-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .contacto-inner {
+        grid-template-columns: 5fr 7fr;
+        gap: 4rem;
+        align-items: start;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .form-group.col-2 {
+        grid-column: span 2;
+      }
+    }
+
+    /* =========================================================
+       RESPONSIVE — desktop (>=1024px)
+       ========================================================= */
+    @media (min-width: 1024px) {
+      .portfolio-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+      }
+
+      /* Reveal overlay only on hover at desktop */
+      .card-overlay {
+        opacity: 0.55;
+      }
+
+      .portfolio-card:hover .card-overlay {
+        opacity: 1;
+      }
+    }
+
+    /* =========================================================
+       RESPONSIVE — small mobile (<=480px)
+       ========================================================= */
+    @media (max-width: 480px) {
+      #especialidades,
+      #portfolio,
+      #proceso,
+      #sobre,
+      #testimonios,
+      #contacto {
+        padding-top: 64px;
+        padding-bottom: 60px;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 0.875rem;
+      }
+
+      .portfolio-card {
+        aspect-ratio: 4 / 3;
+      }
+
+      .sobre-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .stat-number {
+        font-size: 1.7rem;
+      }
+
+      .contacto-form {
+        padding: 1.75rem 1.25rem;
+      }
+
+      .testimonio-card {
+        padding: 2rem 1.25rem;
+      }
+
+      .especialidad-card {
+        padding: 2rem 1.5rem 1.75rem;
+      }
+
+      .hero-badge {
+        display: none;
+      }
+    }
+
+    /* =========================================================
+       EXTRA SMALL (<=375px) — portfolio must be 1 col
+       ========================================================= */
+    @media (max-width: 375px) {
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sobre-stats {
+        gap: 0.5rem;
+      }
+
+      .stat-label {
+        font-size: 0.62rem;
+      }
+    }
+
+    /* =========================================================
+       REDUCED MOTION
+       ========================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .scroll-line {
+        animation: none;
+      }
+      .card-bg {
+        transition: none;
+      }
+      .especialidad-card,
+      .testimonio-card,
+      .btn {
+        transition: none;
+      }
+      @keyframes lineDown { 0%, 100% { opacity: 0.5; } }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="site-nav" aria-label="Navegación principal">
+    <a href="#hero" class="nav-brand">Rosario López</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#especialidades">Especialidades</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#proceso">Proceso</a></li>
+      <li><a href="#sobre">Sobre mí</a></li>
+    </ul>
+    <a href="#contacto" class="nav-cta">Solicitar visita</a>
+  </nav>
+
+  <!-- =====================================================
+       1. HERO
+       ===================================================== -->
+  <section id="hero" aria-label="Bienvenida">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Interiorismo de autor &middot; Madrid</p>
+      <h1 class="hero-headline">
+        Espacios que<br>
+        <em>transforman cómo vives</em>
+      </h1>
+      <p class="hero-sub">
+        No redecoro habitaciones. <strong>Rediseño la forma en que las personas habitan su mundo.</strong>
+        Cada proyecto parte de quien eres y llega a donde quieres estar.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#portfolio" class="btn btn-primary">Ver proyectos</a>
+        <a href="#contacto" class="btn btn-outline-light">Solicitar visita inicial</a>
+      </div>
+    </div>
+
+    <!-- Experience badge -->
+    <div class="hero-badge" aria-label="15 años de experiencia" role="presentation">
+      <span class="hero-badge-number">15</span>
+      <span class="hero-badge-label">Años de<br>experiencia</span>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span>Descubre</span>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       2. ESPECIALIDADES
+       ===================================================== -->
+  <section id="especialidades" aria-label="Especialidades">
+    <div class="container">
+      <header class="section-header reveal">
+        <p class="section-label">
+          <span class="icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </span>
+          Líneas de trabajo
+        </p>
+        <span class="accent-line"></span>
+        <h2>Tres disciplinas,<br><em>un mismo criterio estético</em></h2>
+        <p>Trabajo exclusivamente en los campos donde puedo garantizar el nivel de atención y resultado que mis clientes merecen.</p>
+      </header>
+
+      <div class="especialidades-grid">
+
+        <!-- Card: Residencial Premium -->
+        <article class="especialidad-card reveal reveal-delay-1">
+          <div class="especialidad-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h3>Residencial Premium</h3>
+          <p>Viviendas particulares donde la funcionalidad y la belleza conviven sin concesiones. Desde áticos en Madrid hasta casas de campo en la sierra.</p>
+          <div class="especialidad-detail">
+            <ul role="list">
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Proyecto completo de interiorismo
+              </li>
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Coordinación de proveedores y gremios
+              </li>
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Gestión de mobiliario y piezas singulares
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card: Oficinas de Autor -->
+        <article class="especialidad-card reveal reveal-delay-2">
+          <div class="especialidad-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3>Oficinas de Autor</h3>
+          <p>Espacios de trabajo que inspiran, retienen talento y proyectan los valores de cada empresa. Diseño que eleva la cultura corporativa.</p>
+          <div class="especialidad-detail">
+            <ul role="list">
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Planificación espacial y distribución
+              </li>
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Branding espacial y señalética
+              </li>
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Acústica, iluminación y confort ergonómico
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card: Reformas Integrales -->
+        <article class="especialidad-card reveal reveal-delay-3">
+          <div class="especialidad-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <h3>Reformas Integrales</h3>
+          <p>Transformaciones completas de espacio: desde la estructura y el revestimiento hasta el último detalle decorativo. Llave en mano.</p>
+          <div class="especialidad-detail">
+            <ul role="list">
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Estudio previo y memoria de materiales
+              </li>
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Dirección y supervisión de obra
+              </li>
+              <li>
+                <span class="icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                Presupuesto cerrado, sin sorpresas
+              </li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       3. PORTFOLIO
+       ===================================================== -->
+  <section id="portfolio" aria-label="Portfolio de proyectos">
+    <div class="container">
+      <header class="section-header reveal">
+        <p class="section-label">
+          <span class="icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </span>
+          Proyectos seleccionados
+        </p>
+        <span class="accent-line"></span>
+        <h2>Espacios diseñados<br><em>para ser vividos</em></h2>
+        <p>Una selección de proyectos residenciales y de oficinas realizados en los últimos cuatro años.</p>
+      </header>
+
+      <div class="portfolio-grid">
+
+        <article class="portfolio-card pcard-1 reveal reveal-delay-1" tabindex="0" aria-label="Ático en Salamanca, Madrid — Residencial Premium">
+          <div class="card-bg" aria-hidden="true"></div>
+          <div class="card-grain" aria-hidden="true"></div>
+          <div class="card-overlay">
+            <div class="card-info">
+              <span class="card-type">Residencial Premium</span>
+              <span class="card-name">Ático en Salamanca</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="portfolio-card pcard-2 reveal reveal-delay-2" tabindex="0" aria-label="Oficinas Estudio Creativo, Madrid — Oficinas de Autor">
+          <div class="card-bg" aria-hidden="true"></div>
+          <div class="card-grain" aria-hidden="true"></div>
+          <div class="card-overlay">
+            <div class="card-info">
+              <span class="card-type">Oficinas de Autor</span>
+              <span class="card-name">Estudio creativo en Malasaña</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="portfolio-card pcard-3 reveal reveal-delay-3" tabindex="0" aria-label="Casa de Campo en La Moraleja — Reforma Integral">
+          <div class="card-bg" aria-hidden="true"></div>
+          <div class="card-grain" aria-hidden="true"></div>
+          <div class="card-overlay">
+            <div class="card-info">
+              <span class="card-type">Reforma Integral</span>
+              <span class="card-name">Casa en La Moraleja</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="portfolio-card pcard-4 reveal reveal-delay-1" tabindex="0" aria-label="Loft en Chueca — Residencial Premium">
+          <div class="card-bg" aria-hidden="true"></div>
+          <div class="card-grain" aria-hidden="true"></div>
+          <div class="card-overlay">
+            <div class="card-info">
+              <span class="card-type">Residencial Premium</span>
+              <span class="card-name">Loft en Chueca</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="portfolio-card pcard-5 reveal reveal-delay-2" tabindex="0" aria-label="Sede Corporativa Chamberí — Oficinas de Autor">
+          <div class="card-bg" aria-hidden="true"></div>
+          <div class="card-grain" aria-hidden="true"></div>
+          <div class="card-overlay">
+            <div class="card-info">
+              <span class="card-type">Oficinas de Autor</span>
+              <span class="card-name">Sede corporativa en Chamberí</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="portfolio-card pcard-6 reveal reveal-delay-3" tabindex="0" aria-label="Villa en Pozuelo — Reforma Integral">
+          <div class="card-bg" aria-hidden="true"></div>
+          <div class="card-grain" aria-hidden="true"></div>
+          <div class="card-overlay">
+            <div class="card-info">
+              <span class="card-type">Reforma Integral</span>
+              <span class="card-name">Villa en Pozuelo de Alarcón</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       4. PROCESO
+       ===================================================== -->
+  <section id="proceso" aria-label="Proceso de trabajo">
+    <div class="container">
+      <header class="section-header on-dark reveal">
+        <p class="section-label light">
+          <span class="icon" style="color: var(--rl-terracota-light);" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </span>
+          Método de trabajo
+        </p>
+        <span class="accent-line" style="background: var(--rl-arena);"></span>
+        <h2>Del primer café<br><em>a la llave en mano</em></h2>
+        <p style="color: rgba(250,248,244,0.55);">Un proceso diseñado para que nunca pierdas el control ni la ilusión.</p>
+      </header>
+
+      <div class="proceso-timeline" role="list">
+
+        <div class="proceso-step reveal reveal-delay-1" role="listitem">
+          <div class="step-node">
+            <div class="step-circle" aria-hidden="true">01</div>
+          </div>
+          <div class="step-content">
+            <span class="step-label">Etapa uno</span>
+            <h3 class="step-title">Visita inicial</h3>
+            <p class="step-desc">Nos conocemos en el espacio. Escucho tu vida, tus rutinas, lo que no funciona y lo que sueñas. Sin compromiso.</p>
+          </div>
+        </div>
+
+        <div class="proceso-step reveal reveal-delay-2" role="listitem">
+          <div class="step-node">
+            <div class="step-circle" aria-hidden="true">02</div>
+          </div>
+          <div class="step-content">
+            <span class="step-label">Etapa dos</span>
+            <h3 class="step-title">Concepto</h3>
+            <p class="step-desc">Desarrollo una propuesta de concepto con moodboard, paleta y primeras soluciones espaciales para tu aprobación.</p>
+          </div>
+        </div>
+
+        <div class="proceso-step reveal reveal-delay-3" role="listitem">
+          <div class="step-node">
+            <div class="step-circle" aria-hidden="true">03</div>
+          </div>
+          <div class="step-content">
+            <span class="step-label">Etapa tres</span>
+            <h3 class="step-title">Proyecto</h3>
+            <p class="step-desc">Planos definitivos, selección de materiales, memoria de acabados y presupuesto detallado. Todo por escrito.</p>
+          </div>
+        </div>
+
+        <div class="proceso-step reveal reveal-delay-4" role="listitem">
+          <div class="step-node">
+            <div class="step-circle" aria-hidden="true">04</div>
+          </div>
+          <div class="step-content">
+            <span class="step-label">Etapa cuatro</span>
+            <h3 class="step-title">Ejecución</h3>
+            <p class="step-desc">Coordino todos los gremios y proveedores. Te actualizo semanalmente. Mi objetivo: cero sorpresas.</p>
+          </div>
+        </div>
+
+        <div class="proceso-step reveal reveal-delay-5" role="listitem">
+          <div class="step-node">
+            <div class="step-circle" aria-hidden="true">05</div>
+          </div>
+          <div class="step-content">
+            <span class="step-label">Etapa cinco</span>
+            <h3 class="step-title">Entrega</h3>
+            <p class="step-desc">Supervisión del acabado final, sesión fotográfica y garantía de satisfacción. Tu espacio, perfecto.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       5. SOBRE ROSARIO
+       ===================================================== -->
+  <section id="sobre" aria-label="Sobre Rosario López">
+    <div class="container">
+      <div class="sobre-grid">
+
+        <!-- Visual placeholder — portrait mood -->
+        <div class="sobre-visual reveal">
+          <div class="sobre-portrait-bg" aria-hidden="true"></div>
+          <div class="sobre-portrait-grain" aria-hidden="true"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="sobre-content reveal reveal-delay-1">
+          <p class="section-label" style="margin-bottom: 1.25rem;">
+            <span class="icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </span>
+            Rosario López
+          </p>
+
+          <h2 class="serif" style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 400; color: var(--rl-text-dark); line-height: 1.28; margin-bottom: 1.5rem;">
+            Interiorista. <em style="font-style: italic; color: var(--rl-terracota-dark);">Madrileña de adopción.</em><br>
+            Obsesionada con la luz natural.
+          </h2>
+
+          <div class="sobre-bio">
+            <p>Estudié Diseño de Interiores en la Escuela de Arte 10 de Madrid y me formé posteriormente en el Istituto Marangoni de Milán, donde descubrí que el lujo verdadero no es un precio: es la atención al detalle que nadie nota pero que todos sienten.</p>
+            <p>Llevo quince años transformando casas, oficinas y espacios comerciales en Madrid. He trabajado para familias, para startups que querían un lugar donde sentirse orgullosas de venir a trabajar, y para personas que simplemente merecían vivir mejor.</p>
+          </div>
+
+          <div class="sobre-stats" aria-label="Datos de experiencia">
+            <div class="stat-item">
+              <span class="stat-number">15</span>
+              <span class="stat-label">Años</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">120+</span>
+              <span class="stat-label">Proyectos</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">98%</span>
+              <span class="stat-label">Satisfacción</span>
+            </div>
+          </div>
+
+          <div class="sobre-valores" aria-label="Valores de diseño">
+
+            <div class="valor-item">
+              <div class="valor-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              </div>
+              <div class="valor-text">
+                <strong>Funcionalidad antes que forma</strong>
+                <p>Un espacio bonito que no funciona es simplemente una foto bonita. Diseño para vivir, no para Instagram.</p>
+              </div>
+            </div>
+
+            <div class="valor-item">
+              <div class="valor-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <div class="valor-text">
+                <strong>Materiales honestos y duraderos</strong>
+                <p>Prefiero el mármol a la imitación, la madera maciza al aglomerado. Los buenos materiales envejecen con dignidad.</p>
+              </div>
+            </div>
+
+            <div class="valor-item">
+              <div class="valor-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <div class="valor-text">
+                <strong>El cliente en el centro</strong>
+                <p>Tu vida, tus rutinas y tu presupuesto son los parámetros reales del proyecto. No al revés.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       6. TESTIMONIOS
+       ===================================================== -->
+  <section id="testimonios" aria-label="Testimonios de clientes">
+    <div class="container">
+      <header class="section-header reveal">
+        <p class="section-label">
+          <span class="icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </span>
+          Clientes
+        </p>
+        <span class="accent-line"></span>
+        <h2>Lo que dicen quienes<br><em>ya viven diferente</em></h2>
+      </header>
+
+      <div class="testimonios-grid">
+
+        <article class="testimonio-card reveal reveal-delay-1">
+          <div class="testimonio-mark" aria-hidden="true">&ldquo;</div>
+          <blockquote>
+            <p class="testimonio-text">
+              Llevábamos tres años conviviendo con un salón que nunca nos había gustado. En seis semanas, Rosario lo transformó en el espacio que imaginábamos pero que no sabíamos cómo articular. Ahora no queremos salir de casa.
+            </p>
+            <footer class="testimonio-author">
+              <div class="author-avatar avatar-a" aria-hidden="true">M</div>
+              <div class="author-info">
+                <strong>Marta y Javier Olmedo</strong>
+                <small>Residencial &middot; Ático en Salamanca</small>
+              </div>
+            </footer>
+            <p class="testimonio-placeholder">Testimonio de ejemplo</p>
+          </blockquote>
+        </article>
+
+        <article class="testimonio-card reveal reveal-delay-2">
+          <div class="testimonio-mark" aria-hidden="true">&ldquo;</div>
+          <blockquote>
+            <p class="testimonio-text">
+              Queríamos que nuestra nueva oficina dijera algo sobre nosotros antes de que nadie abriera la boca. Rosario lo entendió a la primera. La reacción de nuestros clientes al entrar ha cambiado por completo desde la reforma.
+            </p>
+            <footer class="testimonio-author">
+              <div class="author-avatar avatar-b" aria-hidden="true">P</div>
+              <div class="author-info">
+                <strong>Pablo Serrano</strong>
+                <small>Oficinas &middot; Director creativo, Madrid</small>
+              </div>
+            </footer>
+            <p class="testimonio-placeholder">Testimonio de ejemplo</p>
+          </blockquote>
+        </article>
+
+        <article class="testimonio-card reveal reveal-delay-3">
+          <div class="testimonio-mark" aria-hidden="true">&ldquo;</div>
+          <blockquote>
+            <p class="testimonio-text">
+              La reforma integral era un proyecto que me daba vértigo. Rosario me dio el control en todo momento: presupuesto, plazos, decisiones. No hubo ni una sola sorpresa desagradable. Y el resultado supera todo lo que había imaginado.
+            </p>
+            <footer class="testimonio-author">
+              <div class="author-avatar avatar-c" aria-hidden="true">A</div>
+              <div class="author-info">
+                <strong>Ana Villalba</strong>
+                <small>Reforma integral &middot; Villa en Pozuelo</small>
+              </div>
+            </footer>
+            <p class="testimonio-placeholder">Testimonio de ejemplo</p>
+          </blockquote>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       7. CONTACTO
+       ===================================================== -->
+  <section id="contacto" aria-label="Formulario de contacto">
+    <div class="container">
+      <div class="contacto-inner">
+
+        <!-- Left: info -->
+        <div class="contacto-info reveal">
+          <p class="section-label light" style="margin-bottom: 1.25rem;">
+            <span class="icon" style="color: var(--rl-terracota-light);" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 5.96 5.96l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/>
+              </svg>
+            </span>
+            Hablemos
+          </p>
+          <h2>Cuéntame en qué<br><em>puedo ayudarte</em></h2>
+          <p>La visita inicial no tiene coste ni compromiso. En una hora puedo darte una primera orientación sobre lo que tu espacio necesita.</p>
+
+          <ul class="contacto-detail-list" role="list">
+            <li>
+              <span class="icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </span>
+              <a href="mailto:info@rosariolopez.es">info@rosariolopez.es</a>
+            </li>
+            <li>
+              <span class="icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </span>
+              Madrid, Salamanca &middot; La Moraleja &middot; Pozuelo
+            </li>
+            <li>
+              <span class="icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </span>
+              Respuesta en menos de 48 horas
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: form -->
+        <div class="contacto-form reveal reveal-delay-1">
+
+          <!-- Success state (hidden initially) -->
+          <div class="form-success" id="form-success" role="status" aria-live="polite" aria-atomic="true">
+            <div class="form-success-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <h3>Mensaje recibido</h3>
+            <p>Gracias por contactar. Te respondo en menos de 48 horas para concretar la visita inicial.</p>
+          </div>
+
+          <!-- The form -->
+          <form id="contacto-form" novalidate>
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="given-name" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email" required />
+              </div>
+
+              <div class="form-group col-2">
+                <label for="tipo-espacio">Tipo de espacio</label>
+                <div class="select-wrapper">
+                  <select id="tipo-espacio" name="tipo-espacio" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="vivienda-nueva">Vivienda nueva</option>
+                    <option value="reforma-vivienda">Reforma de vivienda</option>
+                    <option value="oficina">Oficina o espacio de trabajo</option>
+                    <option value="reforma-integral">Reforma integral</option>
+                    <option value="consulta-puntual">Consulta puntual</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="metros">Superficie aproximada (m²)</label>
+                <input type="number" id="metros" name="metros" placeholder="p. ej. 120" min="10" max="5000" />
+              </div>
+
+              <div class="form-group">
+                <label for="presupuesto">Presupuesto estimado</label>
+                <div class="select-wrapper">
+                  <select id="presupuesto" name="presupuesto">
+                    <option value="" disabled selected>Selecciona un rango</option>
+                    <option value="menos-15k">Menos de 15.000 €</option>
+                    <option value="15-30k">15.000 – 30.000 €</option>
+                    <option value="30-60k">30.000 – 60.000 €</option>
+                    <option value="60-100k">60.000 – 100.000 €</option>
+                    <option value="mas-100k">Más de 100.000 €</option>
+                    <option value="sin-definir">Sin definir todavía</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group col-2">
+                <label for="fecha-inicio">Fecha estimada de inicio</label>
+                <input type="date" id="fecha-inicio" name="fecha-inicio" />
+              </div>
+
+              <div class="form-group col-2">
+                <label for="mensaje">Cuéntame sobre tu proyecto</label>
+                <textarea id="mensaje" name="mensaje" placeholder="Describe brevemente el espacio, qué quieres conseguir y cualquier condicionante importante..." rows="4"></textarea>
+              </div>
+
+              <div class="form-group col-2 form-submit">
+                <button type="submit" class="btn btn-primary" id="form-btn">
+                  <span id="form-btn-text">Solicitar visita inicial</span>
+                  <span id="form-btn-loader" style="display:none;" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                         style="animation: spin 1s linear infinite;">
+                      <line x1="12" y1="2" x2="12" y2="6"/>
+                      <line x1="12" y1="18" x2="12" y2="22"/>
+                      <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/>
+                      <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
+                      <line x1="2" y1="12" x2="6" y2="12"/>
+                      <line x1="18" y1="12" x2="22" y2="12"/>
+                      <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
+                      <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-brand">Rosario López Interiorismo</p>
+    <p class="footer-meta">
+      Diseño conceptual por <a href="https://lhabiastudio.com" target="_blank" rel="noopener">LhabiaStudio</a>
+      &nbsp;&middot;&nbsp; &copy; <span id="footer-year"></span>
+    </p>
+    <p class="footer-disclaimer">Demo de propuesta — No autorizado para uso comercial</p>
+  </footer>
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+  <script>
+    'use strict';
+
+    /* ─── Dynamic year ─── */
+    const yearEl = document.getElementById('footer-year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    /* ─── Scroll-reveal via IntersectionObserver ─── */
+    (function initReveal() {
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (mediaQuery.matches) {
+        // Immediately show all reveal elements if reduced motion is preferred
+        document.querySelectorAll('.reveal').forEach(function(el) {
+          el.classList.add('visible');
+        });
+        return;
+      }
+
+      const revealEls = document.querySelectorAll('.reveal');
+
+      const observer = new IntersectionObserver(
+        function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -44px 0px'
+        }
+      );
+
+      revealEls.forEach(function(el) {
+        observer.observe(el);
+      });
+    }());
+
+    /* ─── Nav scroll behavior ─── */
+    (function initNav() {
+      var nav = document.getElementById('site-nav');
+      if (!nav) return;
+
+      function onScroll() {
+        if (window.scrollY > 48) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll(); // run once on load
+    }());
+
+    /* ─── Smooth anchor scroll ─── */
+    (function initSmoothScroll() {
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          var targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          var target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            var navHeight = 70;
+            var top = target.getBoundingClientRect().top + window.scrollY - navHeight;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
+        });
+      });
+    }());
+
+    /* ─── Portfolio card keyboard accessibility ─── */
+    (function initPortfolioCards() {
+      document.querySelectorAll('.portfolio-card').forEach(function(card) {
+        card.addEventListener('keydown', function(e) {
+          // Enter or Space triggers visual focus highlight (card is tabindex=0)
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.classList.toggle('keyboard-active');
+          }
+        });
+
+        card.addEventListener('blur', function() {
+          card.classList.remove('keyboard-active');
+        });
+      });
+    }());
+
+    /* ─── Contact form: submit + loading state + success ─── */
+    (function initContactForm() {
+      var form     = document.getElementById('contacto-form');
+      var success  = document.getElementById('form-success');
+      var btn      = document.getElementById('form-btn');
+      var btnText  = document.getElementById('form-btn-text');
+      var btnLoader = document.getElementById('form-btn-loader');
+
+      if (!form || !success || !btn) return;
+
+      function setLoading(isLoading) {
+        if (isLoading) {
+          btn.disabled = true;
+          btn.setAttribute('aria-busy', 'true');
+          btnText.style.display = 'none';
+          btnLoader.style.display = 'inline-flex';
+        } else {
+          btn.disabled = false;
+          btn.setAttribute('aria-busy', 'false');
+          btnText.style.display = 'inline';
+          btnLoader.style.display = 'none';
+        }
+      }
+
+      function validateField(field) {
+        // Simple browser-native validation
+        if (field.validity && !field.validity.valid) {
+          field.style.borderColor = 'rgba(196, 80, 80, 0.65)';
+          return false;
+        }
+        field.style.borderColor = '';
+        return true;
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validate required fields
+        var requiredFields = form.querySelectorAll('[required]');
+        var allValid = true;
+
+        requiredFields.forEach(function(field) {
+          if (!validateField(field)) {
+            allValid = false;
+          }
+        });
+
+        if (!allValid) return;
+
+        // Show loading state
+        setLoading(true);
+
+        // Simulate async submit (replace with real fetch in production)
+        setTimeout(function() {
+          setLoading(false);
+
+          // Hide form, show success
+          form.style.display = 'none';
+          success.classList.add('visible');
+
+          // Scroll success into view
+          success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 1400);
+      });
+
+      // Remove red border on input
+      form.querySelectorAll('input, select, textarea').forEach(function(field) {
+        field.addEventListener('input', function() {
+          this.style.borderColor = '';
+        });
+        field.addEventListener('change', function() {
+          this.style.borderColor = '';
+        });
+      });
+    }());
+
+    /* ─── Spinner keyframe injection ─── */
+    (function injectSpinKeyframe() {
+      var style = document.createElement('style');
+      style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+      document.head.appendChild(style);
+    }());
+
+  </script>
+
+</body>
+</html>
